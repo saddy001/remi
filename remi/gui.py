@@ -2281,7 +2281,7 @@ class SpinBox(Input):
         js = 'var key = event.keyCode || event.charCode;'
         js += 'return (event.charCode >= 48 && event.charCode <= 57)'
         if allow_editing:
-            js += ' || (key == 8 || key == 46)'  # allow backspace and delete
+            js += ' || (key == 8 || key == 46 || key == 45|| key == 44 )'  # allow backspace and delete and minus and coma
             js += ' || (key == 13)'  # allow enter
         self.attributes[self.EVENT_ONKEYPRESS] = '%s;' % js
         #FIXES Edge behaviour where onchange event not fires in case of key arrow Up or Down
@@ -3003,6 +3003,41 @@ class SvgCircle(SvgShape):
         self.attributes['cx'] = str(x)
         self.attributes['cy'] = str(y)
 
+class SvgEllipse(SvgShape):
+    """svg ellipse - an ellipse represented filled and with a stroke."""
+
+    @decorate_constructor_parameter_types([int, int, int])
+    def __init__(self, x, y, rx, ry, **kwargs):
+        """
+        Args:
+            x (int): the x center point of the circle
+            y (int): the y center point of the circle
+            rx (int): radius in x
+            ry (int): radius in y
+            kwargs: See Widget.__init__()
+        """
+        super(SvgEllipse, self).__init__(x, y, **kwargs)
+        self.set_radius(rx, ry)
+        self.type = 'ellipse'
+
+    def set_radius(self, rx, ry):
+        """Sets the circle radius.
+
+        Args:
+            radius (int): the circle radius
+        """
+        self.attributes['rx'] = str(rx)
+        self.attributes['ry'] = str(ry)
+
+    def set_position(self, x, y):
+        """Sets the circle position.
+
+        Args:
+            x (int): the x coordinate
+            y (int): the y coordinate
+        """
+        self.attributes['cx'] = str(x)
+        self.attributes['cy'] = str(y)
 
 class SvgLine(Widget):
 
